@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "1006425737700",
+    "firebase_url": "https://xapp-messenger.firebaseio.com",
+    "project_id": "xapp-messenger",
+    "storage_bucket": "xapp-messenger.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1006425737700:android:f935d61c32a41e13",
+        "android_client_info": {
+          "package_name": "br.com.jhonicosta.xapp_messenger"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1006425737700-4ke117dp801oqdc13km6cg94sr7qejqt.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "br.com.jhonicosta.xapp_messenger",
+            "certificate_hash": "c176dae02108385d589118c3d95a5d63e5da8af5"
+          }
+        },
+        {
+          "client_id": "1006425737700-cihcn4to0buhdcdc6hegm0o8n881dvmk.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCf28PYWW-H9CAAUPrhEFXCqRIbgKjR1hs"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1006425737700-cihcn4to0buhdcdc6hegm0o8n881dvmk.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
