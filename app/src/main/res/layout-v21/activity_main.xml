@@ -10,20 +10,19 @@
 
     <ImageView
         android:id="@+id/imageView"
-        android:layout_width="250dp"
+        android:layout_width="300dp"
         android:layout_height="200dp"
         android:layout_marginStart="32dp"
         android:layout_marginLeft="32dp"
         android:layout_marginEnd="32dp"
         android:layout_marginRight="32dp"
-        android:layout_marginBottom="16dp"
-        android:contentDescription="@string/todo"
         app:layout_constraintBottom_toTopOf="@+id/textInputLayout"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_chainStyle="packed"
-        app:srcCompat="@drawable/logo_xapp" />
+        app:srcCompat="@drawable/logo_xapp"
+        android:contentDescription="logo xapp messenger" />
 
     <android.support.design.widget.TextInputLayout
         android:id="@+id/textInputLayout"
@@ -44,8 +43,7 @@
             android:id="@+id/loginEmail"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="@string/title1_login"
-            android:inputType="textEmailAddress" />
+            android:hint="@string/title1_login" />
     </android.support.design.widget.TextInputLayout>
 
     <android.support.design.widget.TextInputLayout
@@ -67,8 +65,7 @@
             android:id="@+id/loginSenha"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="@string/title2_login"
-            android:inputType="textPassword|textWebPassword" />
+            android:hint="@string/title2_login" />
     </android.support.design.widget.TextInputLayout>
 
     <Button
@@ -81,7 +78,7 @@
         android:layout_marginEnd="32dp"
         android:layout_marginRight="32dp"
         android:background="@color/colorPrimaryDark"
-        android:elevation="10dp"
+        android:elevation="10px"
         android:text="@string/button_sign_in"
         android:textColor="@android:color/white"
         app:layout_constraintBottom_toTopOf="@+id/loginCadastrar"

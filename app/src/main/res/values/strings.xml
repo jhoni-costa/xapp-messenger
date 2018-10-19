@@ -1,3 +1,9 @@
 <resources>
-    <string name="app_name">xapp-messenger</string>
+    <string name="app_name">xapp Messenger</string>
+
+    <string name="title1_login">Digite seu e-mail</string>
+    <string name="title2_login">Digite sua senha</string>
+    <string name="title3_login">Não tem conta? Cadastre-se</string>
+    <string name="button_sign_in">Logar</string>
+    <string name="todo">TODO</string>
 </resources>
