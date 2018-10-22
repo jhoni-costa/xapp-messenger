@@ -1,4 +1,4 @@
-package br.com.jhonicosta.xapp_messenger;
+package br.com.jhonicosta.xapp_messenger.activities;
 
 import android.content.Intent;
 import android.support.design.widget.TextInputEditText;
@@ -8,6 +8,8 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import br.com.jhonicosta.xapp_messenger.R;
 
 public class LoginActivity extends AppCompatActivity {
 

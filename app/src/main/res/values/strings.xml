@@ -10,4 +10,11 @@
     <string name="title1_cadastro">Digite seu nome</string>
     <string name="title2_cadastro">Digite sua senha</string>
     <string name="title3_cadastro">Digite seu e-mail</string>
+
+    <string name="senha_vazia">Preencha a senha!</string>
+    <string name="nome_vazio">Preencha o nome!</string>
+    <string name="email_vazio">Preencha o e-mail!</string>
+
+    <string name="cadastro_sucesso">Usuário cadastrado com sucesso!</string>
+    <string name="cadastro_erro">Erro ao cadastrar usuário, tente novamente mais tarde!</string>
 </resources>
