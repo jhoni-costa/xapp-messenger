@@ -24,4 +24,8 @@
 
     <string name="exception_email_senha">E-mail e/ou senha não correspondem</string>
     <string name="exception_usuario_nao_cadastrado">Usuário não cadastrado</string>
+
+    <string name="toolbar_pesquisar">Pesquisar</string>
+    <string name="toolbar_config">Configurações</string>
+    <string name="sair">Sair</string>
 </resources>

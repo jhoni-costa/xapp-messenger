@@ -15,6 +15,7 @@ import com.google.firebase.auth.FirebaseAuthUserCollisionException;
 import com.google.firebase.auth.FirebaseAuthWeakPasswordException;
 
 import br.com.jhonicosta.xapp_messenger.R;
+import br.com.jhonicosta.xapp_messenger.activities.LoginActivity;
 import br.com.jhonicosta.xapp_messenger.activities.MainActivity;
 import br.com.jhonicosta.xapp_messenger.config.FirebaseConfig;
 import br.com.jhonicosta.xapp_messenger.model.Usuario;
@@ -82,6 +83,16 @@ public class UsuarioController {
                         }
                     }
                 });
+    }
+
+    public void deslogar() {
+        try {
+            firebaseAuth.signOut();
+            context.startActivity(new Intent(context, LoginActivity.class));
+            context.finish();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     public void verificaAutentificacao() {
