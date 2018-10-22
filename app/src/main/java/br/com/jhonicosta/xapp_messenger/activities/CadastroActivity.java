@@ -4,9 +4,12 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.TextInputEditText;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
 
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 
 import br.com.jhonicosta.xapp_messenger.R;
@@ -19,7 +22,6 @@ public class CadastroActivity extends AppCompatActivity {
     private FloatingActionButton fabCadastrar;
 
     private UsuarioController controller;
-    private FirebaseAuth auth;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,7 +45,6 @@ public class CadastroActivity extends AppCompatActivity {
                     if (!email.isEmpty()) {
                         if (!senha.isEmpty()) {
                             controller.cadastrar(new Usuario(nome, email, senha));
-                            finish();
                         } else {
                             Toast.makeText(getApplicationContext(), R.string.senha_vazia, Toast.LENGTH_SHORT).show();
                         }
@@ -57,4 +58,5 @@ public class CadastroActivity extends AppCompatActivity {
             }
         });
     }
+
 }

@@ -17,4 +17,8 @@
 
     <string name="cadastro_sucesso">Usuário cadastrado com sucesso!</string>
     <string name="cadastro_erro">Erro ao cadastrar usuário, tente novamente mais tarde!</string>
+
+    <string name="exception_senha_fraca">Digite uma senha mais forte</string>
+    <string name="exception_email_invalido">Digite um e-mail válido</string>
+    <string name="exception_usuario_ja_cadastrado">Este e-mail já está cadastrado</string>
 </resources>
