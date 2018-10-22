@@ -65,8 +65,7 @@ public class UsuarioController {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
-                            context.startActivity(new Intent(context, MainActivity.class));
-                            context.finish();
+                            goToMainActivity();
                         } else {
                             int exception;
                             try {
@@ -83,5 +82,16 @@ public class UsuarioController {
                         }
                     }
                 });
+    }
+
+    public void verificaAutentificacao() {
+        if (firebaseAuth.getCurrentUser() != null) {
+            goToMainActivity();
+        }
+    }
+
+    private void goToMainActivity() {
+        context.startActivity(new Intent(context, MainActivity.class));
+        context.finish();
     }
 }
