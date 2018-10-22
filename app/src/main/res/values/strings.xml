@@ -6,4 +6,8 @@
     <string name="title3_login">Não tem conta? Cadastre-se</string>
     <string name="button_sign_in">Logar</string>
     <string name="todo">TODO</string>
+
+    <string name="title1_cadastro">Digite seu nome</string>
+    <string name="title2_cadastro">Digite sua senha</string>
+    <string name="title3_cadastro">Digite seu e-mail</string>
 </resources>
