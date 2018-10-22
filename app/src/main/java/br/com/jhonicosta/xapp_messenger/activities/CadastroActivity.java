@@ -28,7 +28,7 @@ public class CadastroActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_cadastro);
 
-        controller = new UsuarioController(CadastroActivity.this);
+        controller = new UsuarioController(this);
 
         campoNome = findViewById(R.id.cadastroNome);
         campoEmail = findViewById(R.id.cadastroEmail);
