@@ -1,5 +1,7 @@
 package br.com.jhonicosta.xapp_messenger.model;
 
+import com.google.firebase.database.Exclude;
+
 public class Usuario {
 
     private String id;
@@ -16,6 +18,7 @@ public class Usuario {
         this.senha = senha;
     }
 
+    @Exclude
     public String getId() {
         return id;
     }
@@ -40,6 +43,7 @@ public class Usuario {
         this.email = email;
     }
 
+    @Exclude
     public String getSenha() {
         return senha;
     }
