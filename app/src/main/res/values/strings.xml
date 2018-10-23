@@ -31,4 +31,6 @@
 
     <string name="fragment_name_contato">Contatos</string>
     <string name="fragment_name_conversas">Conversas</string>
+
+    <string name="info_config">Esse não é o seu nome de usuário, nem sua senha. Esse nome ficará visível para seus contatos do xapp</string>
 </resources>
