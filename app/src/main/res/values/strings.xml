@@ -28,4 +28,8 @@
     <string name="toolbar_pesquisar">Pesquisar</string>
     <string name="toolbar_config">Configurações</string>
     <string name="sair">Sair</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="fragment_name_contato">Contatos</string>
+    <string name="fragment_name_conversas">Conversas</string>
 </resources>
