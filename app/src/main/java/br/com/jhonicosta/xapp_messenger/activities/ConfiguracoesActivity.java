@@ -4,14 +4,18 @@ import android.Manifest;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
+import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 
 import br.com.jhonicosta.xapp_messenger.R;
 import br.com.jhonicosta.xapp_messenger.helper.Permissions;
@@ -28,6 +32,7 @@ public class ConfiguracoesActivity extends AppCompatActivity {
 
     private ImageButton camera;
     private ImageButton galeria;
+    private ImageView fotoPerfilCiculo;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,6 +41,7 @@ public class ConfiguracoesActivity extends AppCompatActivity {
 
         camera = findViewById(R.id.buttonCamera);
         galeria = findViewById(R.id.buttonGaleria);
+        fotoPerfilCiculo = findViewById(R.id.fotoPerfilCiculo);
 
         Permissions.validarPermissions(permissions, this, 1);
 
@@ -58,9 +64,38 @@ public class ConfiguracoesActivity extends AppCompatActivity {
         galeria.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+                if (intent.resolveActivity(getPackageManager()) != null) {
+                    startActivityForResult(intent, GALERIA_);
+                }
             }
         });
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if (resultCode == RESULT_OK) {
+            Bitmap imagem = null;
+            try {
+                switch (requestCode) {
+                    case CAMERA_:
+                        imagem = (Bitmap) data.getExtras().get("data");
+                        break;
+                    case GALERIA_:
+                        Uri localImagem = data.getData();
+                        imagem = MediaStore.Images.Media.getBitmap(getContentResolver(), localImagem);
+                        break;
+                }
+                if (imagem != null) {
+                    fotoPerfilCiculo.setImageBitmap(imagem);
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+
     }
 
     @Override
