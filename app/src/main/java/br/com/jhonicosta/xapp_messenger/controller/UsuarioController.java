@@ -2,10 +2,13 @@ package br.com.jhonicosta.xapp_messenger.controller;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.support.annotation.NonNull;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
@@ -13,7 +16,12 @@ import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException;
 import com.google.firebase.auth.FirebaseAuthInvalidUserException;
 import com.google.firebase.auth.FirebaseAuthUserCollisionException;
 import com.google.firebase.auth.FirebaseAuthWeakPasswordException;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
+
+import java.io.ByteArrayOutputStream;
 
 import br.com.jhonicosta.xapp_messenger.R;
 import br.com.jhonicosta.xapp_messenger.activities.LoginActivity;
@@ -26,12 +34,14 @@ public class UsuarioController {
 
     private FirebaseAuth firebaseAuth;
     private DatabaseReference databaseReference;
+    private StorageReference storageReference;
     private Activity context;
 
     public UsuarioController(Activity context) {
         this.context = context;
         this.firebaseAuth = FirebaseConfig.getFirebaseAuth();
         this.databaseReference = FirebaseConfig.getFirebaseDatabase();
+        this.storageReference = FirebaseConfig.getFirebaseStorage();
     }
 
     public void cadastrar(final Usuario usuario) {
@@ -99,6 +109,35 @@ public class UsuarioController {
         DatabaseReference usuarioFB = databaseReference.child("usuarios")
                 .child(usuario.getId());
         usuarioFB.setValue(usuario);
+    }
+
+    public void salvarImagem(Bitmap imagem) {
+
+        ByteArrayOutputStream boas = new ByteArrayOutputStream();
+        imagem.compress(Bitmap.CompressFormat.JPEG, 70, boas);
+        byte[] dataImage = boas.toByteArray();
+
+        StorageReference imgRef = storageReference
+                .child("imagens")
+                .child("perfil")
+                .child(getIdUser() + ".jpeg");
+
+        UploadTask uploadTask = imgRef.putBytes(dataImage);
+        uploadTask.addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                Toast.makeText(context, R.string.upload_image_error, Toast.LENGTH_SHORT).show();
+            }
+        }).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+            @Override
+            public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                Toast.makeText(context, R.string.upload_image_sucess, Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+    public String getIdUser() {
+        return Base64Helper.encode64(firebaseAuth.getCurrentUser().getEmail());
     }
 
     public void deslogar() {

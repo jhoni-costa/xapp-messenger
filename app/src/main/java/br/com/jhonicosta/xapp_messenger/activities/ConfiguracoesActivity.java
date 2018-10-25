@@ -18,6 +18,7 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 
 import br.com.jhonicosta.xapp_messenger.R;
+import br.com.jhonicosta.xapp_messenger.controller.UsuarioController;
 import br.com.jhonicosta.xapp_messenger.helper.Permissions;
 
 public class ConfiguracoesActivity extends AppCompatActivity {
@@ -34,10 +35,14 @@ public class ConfiguracoesActivity extends AppCompatActivity {
     private ImageButton galeria;
     private ImageView fotoPerfilCiculo;
 
+    private UsuarioController controller;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_configuracoes);
+
+        controller = new UsuarioController(this);
 
         camera = findViewById(R.id.buttonCamera);
         galeria = findViewById(R.id.buttonGaleria);
@@ -90,6 +95,8 @@ public class ConfiguracoesActivity extends AppCompatActivity {
                 }
                 if (imagem != null) {
                     fotoPerfilCiculo.setImageBitmap(imagem);
+                    controller.salvarImagem(imagem);
+
                 }
             } catch (Exception e) {
                 e.printStackTrace();
