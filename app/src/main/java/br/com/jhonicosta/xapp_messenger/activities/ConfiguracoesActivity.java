@@ -9,13 +9,16 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.TextView;
+
+import com.bumptech.glide.Glide;
+import com.google.firebase.auth.FirebaseUser;
 
 import br.com.jhonicosta.xapp_messenger.R;
 import br.com.jhonicosta.xapp_messenger.controller.UsuarioController;
@@ -33,7 +36,10 @@ public class ConfiguracoesActivity extends AppCompatActivity {
 
     private ImageButton camera;
     private ImageButton galeria;
+    private TextView nomeUsuario;
     private ImageView fotoPerfilCiculo;
+
+    private FirebaseUser currentUser;
 
     private UsuarioController controller;
 
@@ -47,6 +53,18 @@ public class ConfiguracoesActivity extends AppCompatActivity {
         camera = findViewById(R.id.buttonCamera);
         galeria = findViewById(R.id.buttonGaleria);
         fotoPerfilCiculo = findViewById(R.id.fotoPerfilCiculo);
+        nomeUsuario = findViewById(R.id.nomeUsuario);
+
+        currentUser = controller.getUsuario();
+        Uri url = currentUser.getPhotoUrl();
+
+        if (url != null) {
+            Glide.with(ConfiguracoesActivity.this)
+                    .load(url)
+                    .into(fotoPerfilCiculo);
+        }
+
+        nomeUsuario.setText(currentUser.getDisplayName());
 
         Permissions.validarPermissions(permissions, this, 1);
 

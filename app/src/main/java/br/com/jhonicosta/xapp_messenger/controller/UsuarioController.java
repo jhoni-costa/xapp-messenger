@@ -3,7 +3,9 @@ package br.com.jhonicosta.xapp_messenger.controller;
 import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.net.Uri;
 import android.support.annotation.NonNull;
+import android.util.Log;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -17,6 +19,7 @@ import com.google.firebase.auth.FirebaseAuthInvalidUserException;
 import com.google.firebase.auth.FirebaseAuthUserCollisionException;
 import com.google.firebase.auth.FirebaseAuthWeakPasswordException;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.auth.UserProfileChangeRequest;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
@@ -53,6 +56,7 @@ public class UsuarioController {
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
                             Toast.makeText(context, R.string.cadastro_sucesso, Toast.LENGTH_SHORT).show();
+                            atualizarNome(usuario.getNome());
                             context.finish();
                             try {
                                 usuario.setId(Base64Helper.encode64(usuario.getEmail()));
@@ -132,8 +136,63 @@ public class UsuarioController {
             @Override
             public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
                 Toast.makeText(context, R.string.upload_image_sucess, Toast.LENGTH_SHORT).show();
+
+                Uri url = taskSnapshot.getDownloadUrl();
+                atualizarFoto(url);
             }
         });
+    }
+
+    public boolean atualizarNome(String nome) {
+        try {
+
+            FirebaseUser usuario = getUsuario();
+            UserProfileChangeRequest request = new UserProfileChangeRequest
+                    .Builder()
+                    .setDisplayName(nome)
+                    .build();
+
+            usuario.updateProfile(request).addOnCompleteListener(new OnCompleteListener<Void>() {
+                @Override
+                public void onComplete(@NonNull Task<Void> task) {
+                    if (!task.isSuccessful()) {
+                        Log.d("Perfil", "Erro ao atualizar nome do perfil.");
+                    }
+                }
+            });
+            return true;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+    public boolean atualizarFoto(Uri url) {
+        try {
+
+            FirebaseUser usuario = getUsuario();
+            UserProfileChangeRequest request = new UserProfileChangeRequest
+                    .Builder()
+                    .setPhotoUri(url)
+                    .build();
+
+            usuario.updateProfile(request).addOnCompleteListener(new OnCompleteListener<Void>() {
+                @Override
+                public void onComplete(@NonNull Task<Void> task) {
+                    if (!task.isSuccessful()) {
+                        Log.d("Perfil", "Erro ao atualizar foto do perfil.");
+                    }
+                }
+            });
+            return true;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+    public FirebaseUser getUsuario() {
+        return firebaseAuth.getCurrentUser();
     }
 
     public String getIdUser() {
