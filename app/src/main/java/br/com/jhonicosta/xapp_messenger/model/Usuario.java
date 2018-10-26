@@ -8,6 +8,7 @@ public class Usuario {
     private String nome;
     private String email;
     private String senha;
+    private String fotoUsuario;
 
     public Usuario() {
     }
@@ -50,5 +51,13 @@ public class Usuario {
 
     public void setSenha(String senha) {
         this.senha = senha;
+    }
+
+    public String getFotoUsuario() {
+        return fotoUsuario;
+    }
+
+    public void setFotoUsuario(String fotoUsuario) {
+        this.fotoUsuario = fotoUsuario;
     }
 }

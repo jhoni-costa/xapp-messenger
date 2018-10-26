@@ -16,6 +16,7 @@ import android.view.View;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.google.firebase.auth.FirebaseUser;
@@ -23,6 +24,7 @@ import com.google.firebase.auth.FirebaseUser;
 import br.com.jhonicosta.xapp_messenger.R;
 import br.com.jhonicosta.xapp_messenger.controller.UsuarioController;
 import br.com.jhonicosta.xapp_messenger.helper.Permissions;
+import br.com.jhonicosta.xapp_messenger.model.Usuario;
 
 public class ConfiguracoesActivity extends AppCompatActivity {
 
@@ -37,10 +39,11 @@ public class ConfiguracoesActivity extends AppCompatActivity {
     private ImageButton camera;
     private ImageButton galeria;
     private TextView nomeUsuario;
-    private ImageView fotoPerfilCiculo;
+    private ImageView fotoPerfilCiculo, updateNome;
 
     private FirebaseUser currentUser;
 
+    private Usuario usuario;
     private UsuarioController controller;
 
     @Override
@@ -49,13 +52,15 @@ public class ConfiguracoesActivity extends AppCompatActivity {
         setContentView(R.layout.activity_configuracoes);
 
         controller = new UsuarioController(this);
+        usuario = controller.getUsuario();
 
         camera = findViewById(R.id.buttonCamera);
         galeria = findViewById(R.id.buttonGaleria);
         fotoPerfilCiculo = findViewById(R.id.fotoPerfilCiculo);
         nomeUsuario = findViewById(R.id.nomeUsuario);
+        updateNome = findViewById(R.id.updateNome);
 
-        currentUser = controller.getUsuario();
+        currentUser = controller.getFirebaseUser();
         Uri url = currentUser.getPhotoUrl();
 
         if (url != null) {
@@ -93,6 +98,22 @@ public class ConfiguracoesActivity extends AppCompatActivity {
                 }
             }
         });
+
+        updateNome.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String nome = nomeUsuario.getText().toString();
+                boolean r = controller.atualizarNome(nome);
+
+                if (r) {
+                    usuario.setNome(nome);
+                    controller.update(usuario);
+                    Toast.makeText(getApplicationContext(), "Atualizou", Toast.LENGTH_SHORT).show();
+                } else {
+                    Toast.makeText(getApplicationContext(), "Não Atualizou", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
     }
 
     @Override
@@ -113,7 +134,7 @@ public class ConfiguracoesActivity extends AppCompatActivity {
                 }
                 if (imagem != null) {
                     fotoPerfilCiculo.setImageBitmap(imagem);
-                    controller.salvarImagem(imagem);
+                    controller.salvarImagem(imagem, usuario);
 
                 }
             } catch (Exception e) {
@@ -149,4 +170,5 @@ public class ConfiguracoesActivity extends AppCompatActivity {
         AlertDialog dialog = builder.create();
         dialog.show();
     }
+
 }

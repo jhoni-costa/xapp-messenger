@@ -21,10 +21,13 @@ import com.google.firebase.auth.FirebaseAuthWeakPasswordException;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.UserProfileChangeRequest;
 import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.Exclude;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
 import java.io.ByteArrayOutputStream;
+import java.util.HashMap;
+import java.util.Map;
 
 import br.com.jhonicosta.xapp_messenger.R;
 import br.com.jhonicosta.xapp_messenger.activities.LoginActivity;
@@ -115,7 +118,34 @@ public class UsuarioController {
         usuarioFB.setValue(usuario);
     }
 
-    public void salvarImagem(Bitmap imagem) {
+    public void update(Usuario usuario) {
+        DatabaseReference usuarios = databaseReference.child("usuarios")
+                .child(getIdUser());
+
+        usuarios.updateChildren(userToMap(usuario));
+    }
+
+    public Usuario getUsuario() {
+        Usuario user = new Usuario();
+        user.setEmail(getFirebaseUser().getEmail());
+        user.setNome(getFirebaseUser().getDisplayName());
+        user.setFotoUsuario("");
+        if (getFirebaseUser().getPhotoUrl() != null) {
+            user.setFotoUsuario(getFirebaseUser().getPhotoUrl().toString());
+        }
+        return user;
+    }
+
+    @Exclude
+    public Map<String, Object> userToMap(Usuario usuario) {
+        HashMap<String, Object> map = new HashMap<>();
+        map.put("email", usuario.getEmail());
+        map.put("nome", usuario.getNome());
+        map.put("fotoUsuario", usuario.getFotoUsuario());
+        return map;
+    }
+
+    public void salvarImagem(Bitmap imagem, final Usuario usuario) {
 
         ByteArrayOutputStream boas = new ByteArrayOutputStream();
         imagem.compress(Bitmap.CompressFormat.JPEG, 70, boas);
@@ -138,7 +168,12 @@ public class UsuarioController {
                 Toast.makeText(context, R.string.upload_image_sucess, Toast.LENGTH_SHORT).show();
 
                 Uri url = taskSnapshot.getDownloadUrl();
-                atualizarFoto(url);
+                boolean r = atualizarFoto(url);
+                if (r) {
+                    usuario.setFotoUsuario(url.toString());
+                    update(usuario);
+                    Toast.makeText(context, "Foto Atualizada", Toast.LENGTH_SHORT).show();
+                }
             }
         });
     }
@@ -146,7 +181,7 @@ public class UsuarioController {
     public boolean atualizarNome(String nome) {
         try {
 
-            FirebaseUser usuario = getUsuario();
+            FirebaseUser usuario = getFirebaseUser();
             UserProfileChangeRequest request = new UserProfileChangeRequest
                     .Builder()
                     .setDisplayName(nome)
@@ -169,8 +204,7 @@ public class UsuarioController {
 
     public boolean atualizarFoto(Uri url) {
         try {
-
-            FirebaseUser usuario = getUsuario();
+            FirebaseUser usuario = getFirebaseUser();
             UserProfileChangeRequest request = new UserProfileChangeRequest
                     .Builder()
                     .setPhotoUri(url)
@@ -191,7 +225,7 @@ public class UsuarioController {
         }
     }
 
-    public FirebaseUser getUsuario() {
+    public FirebaseUser getFirebaseUser() {
         return firebaseAuth.getCurrentUser();
     }
 
