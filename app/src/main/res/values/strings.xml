@@ -36,4 +36,6 @@
     <string name="fragment_name_conversas">Conversas</string>
 
     <string name="info_config">Esse não é o seu nome de usuário, nem sua senha. Esse nome ficará visível para seus contatos do xapp</string>
+    <string name="title_activity_chat">ChatActivity</string>
+    <string name="title_activity_main2">Main2Activity</string>
 </resources>
