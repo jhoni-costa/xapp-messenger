@@ -15,7 +15,7 @@ import com.ogaclejapan.smarttablayout.utils.v4.FragmentPagerItems;
 
 import br.com.jhonicosta.xapp_messenger.R;
 import br.com.jhonicosta.xapp_messenger.controller.UsuarioController;
-import br.com.jhonicosta.xapp_messenger.fragments.ContatoFragment;
+import br.com.jhonicosta.xapp_messenger.fragments.ContatosFragment;
 import br.com.jhonicosta.xapp_messenger.fragments.ConversasFragment;
 
 public class MainActivity extends AppCompatActivity {
@@ -70,7 +70,7 @@ public class MainActivity extends AppCompatActivity {
         FragmentPagerItemAdapter adapter = new FragmentPagerItemAdapter(
                 getSupportFragmentManager(),
                 FragmentPagerItems.with(this)
-                        .add(R.string.fragment_name_contato, ContatoFragment.class)
+                        .add(R.string.fragment_name_contato, ContatosFragment.class)
                         .add(R.string.fragment_name_conversas, ConversasFragment.class)
                         .create()
         );

@@ -27,7 +27,7 @@ import br.com.jhonicosta.xapp_messenger.controller.UsuarioController;
 import br.com.jhonicosta.xapp_messenger.helper.RecyclerItemClickListener;
 import br.com.jhonicosta.xapp_messenger.model.Usuario;
 
-public class ContatoFragment extends Fragment {
+public class ContatosFragment extends Fragment {
 
     private RecyclerView listaContatos;
     private ContatosAdapter adapter;
@@ -36,7 +36,7 @@ public class ContatoFragment extends Fragment {
     private ValueEventListener listener;
     private FirebaseUser firebaseUser;
 
-    public ContatoFragment() {
+    public ContatosFragment() {
     }
 
     @Override
@@ -63,7 +63,10 @@ public class ContatoFragment extends Fragment {
                         new RecyclerItemClickListener.OnItemClickListener() {
                             @Override
                             public void onItemClick(View view, int position) {
-                                startActivity(new Intent(getActivity(), ChatActivity.class));
+                                Usuario u = list.get(position);
+                                Intent i = new Intent(getActivity(), ChatActivity.class);
+                                i.putExtra("chatContato", u);
+                                startActivity(i);
                             }
 
                             @Override
