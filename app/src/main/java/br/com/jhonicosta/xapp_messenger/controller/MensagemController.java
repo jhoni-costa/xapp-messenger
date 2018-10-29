@@ -16,7 +16,6 @@ public class MensagemController {
     public void enviarMensagem(String remetente, String destinatario, Mensagem mensagem) {
         DatabaseReference msgRef = reference.child("mensagens");
 
-
         msgRef.child(remetente).child(destinatario).push().setValue(mensagem);
     }
 }
