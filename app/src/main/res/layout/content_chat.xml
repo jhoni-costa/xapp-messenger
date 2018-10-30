@@ -50,7 +50,7 @@
                 android:text="" />
 
             <ImageView
-                android:id="@+id/imageView2"
+                android:id="@+id/imageCamera"
                 android:layout_width="30dp"
                 android:layout_height="30dp"
                 android:src="@drawable/ic_photo_camera_cinza_24dp" />

@@ -31,7 +31,7 @@ public class ContatosFragment extends Fragment {
 
     private RecyclerView listaContatos;
     private ContatosAdapter adapter;
-    private List<Usuario> list = new ArrayList<>();
+    private List<Usuario> list;
     private DatabaseReference reference;
     private ValueEventListener listener;
     private FirebaseUser firebaseUser;
@@ -43,7 +43,7 @@ public class ContatosFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_contato, container, false);
-
+        list = new ArrayList<>();
         listaContatos = view.findViewById(R.id.listaContatos);
         reference = FirebaseConfig.getFirebaseDatabase().child("usuarios");
 
