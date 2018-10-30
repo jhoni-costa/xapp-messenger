@@ -3,6 +3,7 @@ package br.com.jhonicosta.xapp_messenger.controller;
 import com.google.firebase.database.DatabaseReference;
 
 import br.com.jhonicosta.xapp_messenger.config.FirebaseConfig;
+import br.com.jhonicosta.xapp_messenger.model.Conversa;
 import br.com.jhonicosta.xapp_messenger.model.Mensagem;
 
 public class MensagemController {
@@ -18,4 +19,5 @@ public class MensagemController {
 
         msgRef.child(remetente).child(destinatario).push().setValue(mensagem);
     }
+
 }

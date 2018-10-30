@@ -39,6 +39,7 @@ import br.com.jhonicosta.xapp_messenger.config.FirebaseConfig;
 import br.com.jhonicosta.xapp_messenger.controller.MensagemController;
 import br.com.jhonicosta.xapp_messenger.controller.UsuarioController;
 import br.com.jhonicosta.xapp_messenger.helper.Base64Helper;
+import br.com.jhonicosta.xapp_messenger.model.Conversa;
 import br.com.jhonicosta.xapp_messenger.model.Mensagem;
 import br.com.jhonicosta.xapp_messenger.model.Usuario;
 import de.hdodenhof.circleimageview.CircleImageView;
@@ -162,6 +163,7 @@ public class ChatActivity extends AppCompatActivity {
 
                             controllerMsg.enviarMensagem(idRemetente, idDestinatario, mensagem);
                             controllerMsg.enviarMensagem(idDestinatario, idRemetente, mensagem);
+
                         }
                     });
 
@@ -171,6 +173,21 @@ public class ChatActivity extends AppCompatActivity {
             }
         }
     }
+
+    private void salvarConversa(Mensagem msg) {
+
+        Conversa conversaRemetente = new Conversa();
+        conversaRemetente.setIdRemetente(idRemetente);
+        conversaRemetente.setIdDestinatario(idDestinatario);
+        conversaRemetente.setUltimaMensagem(msg.getMensagem());
+        conversaRemetente.setUsuarioExibicao(usuario);
+        conversaRemetente.salvar();
+        Toast.makeText(ChatActivity.this, "Remetente: " + idRemetente +
+                        "Destinatario: " + idDestinatario +
+                        "Usuario: " + usuario.getNome(),
+                Toast.LENGTH_SHORT).show();
+    }
+
 
     private void recyclerViewConfig() {
         adapter = new MensagensAdaptar(mensagens, getApplicationContext(), this);
@@ -189,6 +206,7 @@ public class ChatActivity extends AppCompatActivity {
 
             controllerMsg.enviarMensagem(idRemetente, Base64Helper.encode64(usuario.getEmail()), mensagem);
             controllerMsg.enviarMensagem(Base64Helper.encode64(usuario.getEmail()), idRemetente, mensagem);
+            salvarConversa(mensagem);
             editMensagem.setText("");
 
         } else {
