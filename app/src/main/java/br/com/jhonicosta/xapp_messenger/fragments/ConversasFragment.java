@@ -1,6 +1,7 @@
 package br.com.jhonicosta.xapp_messenger.fragments;
 
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.provider.ContactsContract;
 import android.support.v4.app.Fragment;
@@ -10,6 +11,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Adapter;
+import android.widget.AdapterView;
 
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
@@ -20,10 +22,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 import br.com.jhonicosta.xapp_messenger.R;
+import br.com.jhonicosta.xapp_messenger.activities.ChatActivity;
 import br.com.jhonicosta.xapp_messenger.adapter.ConversasAdapter;
 import br.com.jhonicosta.xapp_messenger.config.FirebaseConfig;
 import br.com.jhonicosta.xapp_messenger.controller.UsuarioController;
+import br.com.jhonicosta.xapp_messenger.helper.RecyclerItemClickListener;
 import br.com.jhonicosta.xapp_messenger.model.Conversa;
+import br.com.jhonicosta.xapp_messenger.model.Usuario;
 
 public class ConversasFragment extends Fragment {
 
@@ -39,7 +44,7 @@ public class ConversasFragment extends Fragment {
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+    public View onCreateView(LayoutInflater inflater, final ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_conversas, container, false);
 
@@ -53,6 +58,32 @@ public class ConversasFragment extends Fragment {
         listaConversas.setLayoutManager(layoutManager);
         listaConversas.setHasFixedSize(true);
         listaConversas.setAdapter(adapter);
+
+        listaConversas.addOnItemTouchListener(new RecyclerItemClickListener(
+                getActivity(),
+                listaConversas,
+                new RecyclerItemClickListener.OnItemClickListener() {
+                    @Override
+                    public void onItemClick(View view, int position) {
+                        Conversa conversa = list.get(position);
+
+                        Intent i = new Intent(getActivity(), ChatActivity.class);
+                        i.putExtra("chatContato", conversa.getUsuarioExibicao());
+                        startActivity(i);
+                    }
+
+                    @Override
+                    public void onLongItemClick(View view, int position) {
+
+                    }
+
+                    @Override
+                    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+
+                    }
+                }
+
+        ));
 
         String idUsuario = new UsuarioController(getActivity()).getIdUser();
 
