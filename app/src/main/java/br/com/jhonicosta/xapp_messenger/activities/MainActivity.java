@@ -5,10 +5,12 @@ import android.os.Bundle;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 
+import com.miguelcatalan.materialsearchview.MaterialSearchView;
 import com.ogaclejapan.smarttablayout.SmartTabLayout;
 import com.ogaclejapan.smarttablayout.utils.v4.FragmentPagerItemAdapter;
 import com.ogaclejapan.smarttablayout.utils.v4.FragmentPagerItems;
@@ -22,6 +24,7 @@ public class MainActivity extends AppCompatActivity {
 
     private SmartTabLayout smartTab;
     private ViewPager viewPager;
+    private MaterialSearchView searchView;
 
     private UsuarioController controller;
 
@@ -35,12 +38,37 @@ public class MainActivity extends AppCompatActivity {
         smartTab = findViewById(R.id.smartTab);
         viewPager = findViewById(R.id.viewPager);
 
+
         Toolbar toolbar = findViewById(R.id.toolbarMain);
         toolbar.setTitle(R.string.app_name);
         setSupportActionBar(toolbar);
 
-        smartTabConfig();
+        final FragmentPagerItemAdapter adapter = new FragmentPagerItemAdapter(
+                getSupportFragmentManager(),
+                FragmentPagerItems.with(this)
+                        .add(R.string.fragment_name_contato, ContatosFragment.class)
+                        .add(R.string.fragment_name_conversas, ConversasFragment.class)
+                        .create()
+        );
+        viewPager.setAdapter(adapter);
+        smartTab.setViewPager(viewPager);
 
+        searchView = findViewById(R.id.search_view);
+        searchView.setOnQueryTextListener(new MaterialSearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                ConversasFragment conversasFragment = (ConversasFragment) adapter.getPage(1);
+                if (newText != null & !newText.isEmpty()) {
+                    conversasFragment.pesquisarConversas(newText);
+                }
+                return true;
+            }
+        });
     }
 
     @Override
@@ -48,6 +76,9 @@ public class MainActivity extends AppCompatActivity {
 
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.menu_main, menu);
+
+        MenuItem item = menu.findItem(R.id.menuPesquisa);
+        searchView.setMenuItem(item);
 
         return super.onCreateOptionsMenu(menu);
     }
@@ -66,15 +97,4 @@ public class MainActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    private void smartTabConfig() {
-        FragmentPagerItemAdapter adapter = new FragmentPagerItemAdapter(
-                getSupportFragmentManager(),
-                FragmentPagerItems.with(this)
-                        .add(R.string.fragment_name_contato, ContatosFragment.class)
-                        .add(R.string.fragment_name_conversas, ConversasFragment.class)
-                        .create()
-        );
-        viewPager.setAdapter(adapter);
-        smartTab.setViewPager(viewPager);
-    }
 }

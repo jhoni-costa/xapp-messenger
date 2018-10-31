@@ -7,6 +7,7 @@ import android.provider.ContactsContract;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -102,6 +103,10 @@ public class ConversasFragment extends Fragment {
     public void onStop() {
         super.onStop();
         conversasRef.removeEventListener(eventListener);
+    }
+
+    public void pesquisarConversas(String texto) {
+        Log.d("evento", texto);
     }
 
     public void recuperarConversas() {
