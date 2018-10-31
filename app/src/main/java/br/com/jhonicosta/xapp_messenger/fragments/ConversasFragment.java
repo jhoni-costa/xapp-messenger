@@ -3,15 +3,12 @@ package br.com.jhonicosta.xapp_messenger.fragments;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.provider.ContactsContract;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Adapter;
 import android.widget.AdapterView;
 
 import com.google.firebase.database.ChildEventListener;
@@ -29,7 +26,6 @@ import br.com.jhonicosta.xapp_messenger.config.FirebaseConfig;
 import br.com.jhonicosta.xapp_messenger.controller.UsuarioController;
 import br.com.jhonicosta.xapp_messenger.helper.RecyclerItemClickListener;
 import br.com.jhonicosta.xapp_messenger.model.Conversa;
-import br.com.jhonicosta.xapp_messenger.model.Usuario;
 
 public class ConversasFragment extends Fragment {
 
@@ -106,7 +102,23 @@ public class ConversasFragment extends Fragment {
     }
 
     public void pesquisarConversas(String texto) {
-        Log.d("evento", texto);
+        List<Conversa> listaBusca = new ArrayList<>();
+        for (Conversa conversa : list) {
+            String nome = conversa.getUsuarioExibicao().getNome().toLowerCase();
+            String ultimaMensagem = conversa.getUltimaMensagem().toLowerCase();
+            if (nome.contains(texto) || ultimaMensagem.contains(texto)) {
+                listaBusca.add(conversa);
+            }
+        }
+        adapter = new ConversasAdapter(listaBusca, getActivity());
+        listaConversas.setAdapter(adapter);
+        adapter.notifyDataSetChanged();
+    }
+
+    public void recarregaListaDeConversas() {
+        adapter = new ConversasAdapter(list, getActivity());
+        listaConversas.setAdapter(adapter);
+        adapter.notifyDataSetChanged();
     }
 
     public void recuperarConversas() {

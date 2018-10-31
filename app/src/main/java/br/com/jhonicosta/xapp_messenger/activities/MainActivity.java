@@ -54,6 +54,20 @@ public class MainActivity extends AppCompatActivity {
         smartTab.setViewPager(viewPager);
 
         searchView = findViewById(R.id.search_view);
+
+        searchView.setOnSearchViewListener(new MaterialSearchView.SearchViewListener() {
+            @Override
+            public void onSearchViewShown() {
+
+            }
+
+            @Override
+            public void onSearchViewClosed() {
+                ConversasFragment conversasFragment = (ConversasFragment) adapter.getPage(1);
+                conversasFragment.recarregaListaDeConversas();
+            }
+        });
+
         searchView.setOnQueryTextListener(new MaterialSearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
@@ -64,7 +78,7 @@ public class MainActivity extends AppCompatActivity {
             public boolean onQueryTextChange(String newText) {
                 ConversasFragment conversasFragment = (ConversasFragment) adapter.getPage(1);
                 if (newText != null & !newText.isEmpty()) {
-                    conversasFragment.pesquisarConversas(newText);
+                    conversasFragment.pesquisarConversas(newText.toLowerCase());
                 }
                 return true;
             }
