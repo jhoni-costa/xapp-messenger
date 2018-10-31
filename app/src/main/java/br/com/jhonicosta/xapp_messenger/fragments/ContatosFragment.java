@@ -21,6 +21,7 @@ import java.util.List;
 
 import br.com.jhonicosta.xapp_messenger.R;
 import br.com.jhonicosta.xapp_messenger.activities.ChatActivity;
+import br.com.jhonicosta.xapp_messenger.activities.GrupoActivity;
 import br.com.jhonicosta.xapp_messenger.adapter.ContatosAdapter;
 import br.com.jhonicosta.xapp_messenger.config.FirebaseConfig;
 import br.com.jhonicosta.xapp_messenger.controller.UsuarioController;
@@ -64,9 +65,15 @@ public class ContatosFragment extends Fragment {
                             @Override
                             public void onItemClick(View view, int position) {
                                 Usuario u = list.get(position);
-                                Intent i = new Intent(getActivity(), ChatActivity.class);
-                                i.putExtra("chatContato", u);
-                                startActivity(i);
+                                boolean cabecalho = u.getEmail().isEmpty();
+                                if (!cabecalho) {
+                                    Intent i = new Intent(getActivity(), ChatActivity.class);
+                                    i.putExtra("chatContato", u);
+                                    startActivity(i);
+                                } else {
+                                    Intent i = new Intent(getActivity(), GrupoActivity.class);
+                                    startActivity(i);
+                                }
                             }
 
                             @Override
@@ -98,6 +105,13 @@ public class ContatosFragment extends Fragment {
     }
 
     public void findAll() {
+        list.clear();
+
+        Usuario itemGrupo = new Usuario();
+        itemGrupo.setNome("Novo Grupo");
+        itemGrupo.setEmail("");
+        list.add(itemGrupo);
+
         listener = reference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {

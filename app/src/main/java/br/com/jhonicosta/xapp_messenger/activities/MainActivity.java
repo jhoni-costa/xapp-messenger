@@ -79,6 +79,8 @@ public class MainActivity extends AppCompatActivity {
                 ConversasFragment conversasFragment = (ConversasFragment) adapter.getPage(1);
                 if (newText != null & !newText.isEmpty()) {
                     conversasFragment.pesquisarConversas(newText.toLowerCase());
+                } else {
+                    conversasFragment.recarregaListaDeConversas();
                 }
                 return true;
             }

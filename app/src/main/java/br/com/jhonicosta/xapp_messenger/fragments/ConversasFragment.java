@@ -103,6 +103,7 @@ public class ConversasFragment extends Fragment {
 
     public void pesquisarConversas(String texto) {
         List<Conversa> listaBusca = new ArrayList<>();
+
         for (Conversa conversa : list) {
             String nome = conversa.getUsuarioExibicao().getNome().toLowerCase();
             String ultimaMensagem = conversa.getUltimaMensagem().toLowerCase();
@@ -122,6 +123,7 @@ public class ConversasFragment extends Fragment {
     }
 
     public void recuperarConversas() {
+        list.clear();
         String idUsuario = new UsuarioController(getActivity()).getIdUser();
 
         DatabaseReference conversasRef = reference.child("conversas").child(idUsuario);
