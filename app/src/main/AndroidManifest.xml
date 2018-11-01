@@ -46,6 +46,15 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="br.com.jhonicosta.xapp_messenger.activities.MainActivity" />
         </activity>
+        <activity
+            android:name=".activities.CadastroGrupoActivity"
+            android:label="@string/title_activity_cadastro_grupo"
+            android:parentActivityName=".activities.GrupoActivity"
+            android:theme="@style/loginTheme">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="br.com.jhonicosta.xapp_messenger.activities.GrupoActivity" />
+        </activity>
     </application>
 
 </manifest>
