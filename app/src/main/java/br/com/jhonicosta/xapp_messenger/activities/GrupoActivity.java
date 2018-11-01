@@ -57,7 +57,7 @@ public class GrupoActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Intent i = new Intent(GrupoActivity.this, CadastroGrupoActivity.class);
-                i.putExtra("mebros", (Serializable) listaMembrosSelecionados);
+                i.putExtra("membros", (Serializable) listaMembrosSelecionados);
                 startActivity(i);
             }
         });
