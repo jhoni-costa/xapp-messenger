@@ -40,6 +40,7 @@ import br.com.jhonicosta.xapp_messenger.controller.MensagemController;
 import br.com.jhonicosta.xapp_messenger.controller.UsuarioController;
 import br.com.jhonicosta.xapp_messenger.helper.Base64Helper;
 import br.com.jhonicosta.xapp_messenger.model.Conversa;
+import br.com.jhonicosta.xapp_messenger.model.Grupo;
 import br.com.jhonicosta.xapp_messenger.model.Mensagem;
 import br.com.jhonicosta.xapp_messenger.model.Usuario;
 import de.hdodenhof.circleimageview.CircleImageView;
@@ -55,6 +56,7 @@ public class ChatActivity extends AppCompatActivity {
     private ImageView imageCamera;
 
     private Usuario usuario;
+    private Grupo grupo;
 
     private UsuarioController controllerUser;
     private MensagemController controllerMsg;
@@ -91,19 +93,38 @@ public class ChatActivity extends AppCompatActivity {
 
         Bundle bundle = getIntent().getExtras();
         if (bundle != null) {
-            usuario = (Usuario) bundle.getSerializable("chatContato");
-            textViewNome.setText(usuario.getNome());
 
-            String foto = usuario.getFotoUsuario();
-            if (foto != null) {
-                Uri uri = Uri.parse(usuario.getFotoUsuario());
-                Glide.with(ChatActivity.this).load(uri).into(circleImageFoto);
+            if (bundle.containsKey("chatGrupo")) {
+
+                grupo = (Grupo) bundle.getSerializable("chatGrupo");
+                idDestinatario = grupo.getId();
+                textViewNome.setText(grupo.getNome());
+
+                String foto = grupo.getFoto();
+                if (foto != null) {
+                    Uri uri = Uri.parse(foto);
+                    Glide.with(ChatActivity.this).load(uri).into(circleImageFoto);
+                } else {
+                    circleImageFoto.setImageResource(R.drawable.padrao);
+                }
+
             } else {
-                circleImageFoto.setImageResource(R.drawable.padrao);
+
+                usuario = (Usuario) bundle.getSerializable("chatContato");
+                textViewNome.setText(usuario.getNome());
+                idDestinatario = Base64Helper.encode64(usuario.getEmail());
+
+                String foto = usuario.getFotoUsuario();
+                if (foto != null) {
+                    Uri uri = Uri.parse(usuario.getFotoUsuario());
+                    Glide.with(ChatActivity.this).load(uri).into(circleImageFoto);
+                } else {
+                    circleImageFoto.setImageResource(R.drawable.padrao);
+                }
             }
+
         }
         idRemetente = controllerUser.getIdUser();
-        idDestinatario = Base64Helper.encode64(usuario.getEmail());
         recyclerViewConfig();
 
         database = FirebaseConfig.getFirebaseDatabase();

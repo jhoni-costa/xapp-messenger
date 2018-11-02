@@ -15,6 +15,7 @@ import java.util.List;
 
 import br.com.jhonicosta.xapp_messenger.R;
 import br.com.jhonicosta.xapp_messenger.model.Conversa;
+import br.com.jhonicosta.xapp_messenger.model.Grupo;
 import de.hdodenhof.circleimageview.CircleImageView;
 
 public class ConversasAdapter extends RecyclerView.Adapter<ConversasAdapter.MyViewHolder> {
@@ -37,14 +38,29 @@ public class ConversasAdapter extends RecyclerView.Adapter<ConversasAdapter.MyVi
     @Override
     public void onBindViewHolder(@NonNull MyViewHolder myViewHolder, int i) {
         Conversa conversa = conversas.get(i);
-        myViewHolder.nome.setText(conversa.getUsuarioExibicao().getNome());
+        if (conversa.getIsGroup().equals("true")) {
+            myViewHolder.nome.setText(conversa.getGrupo().getNome());
+        } else {
+            myViewHolder.nome.setText(conversa.getUsuarioExibicao().getNome());
+        }
         myViewHolder.ultima.setText(conversa.getUltimaMensagem());
 
-        if (conversa.getUsuarioExibicao().getFotoUsuario() != null) {
-            Glide.with(context).load(Uri.parse(conversa.getUsuarioExibicao().getFotoUsuario())).into(myViewHolder.foto);
+        if (conversa.getIsGroup().equals("true")) {
+            Grupo grupo = conversa.getGrupo();
+            myViewHolder.nome.setText(grupo.getNome());
+            if (grupo.getFoto() != null) {
+                Glide.with(context).load(Uri.parse(grupo.getFoto())).into(myViewHolder.foto);
+            } else {
+                myViewHolder.foto.setImageResource(R.drawable.padrao);
+            }
         } else {
-            myViewHolder.foto.setImageResource(R.drawable.padrao);
+            if (conversa.getUsuarioExibicao().getFotoUsuario() != null) {
+                Glide.with(context).load(Uri.parse(conversa.getUsuarioExibicao().getFotoUsuario())).into(myViewHolder.foto);
+            } else {
+                myViewHolder.foto.setImageResource(R.drawable.padrao);
+            }
         }
+
 
     }
 
