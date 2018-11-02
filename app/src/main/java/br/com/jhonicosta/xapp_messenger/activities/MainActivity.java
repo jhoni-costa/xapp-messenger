@@ -76,12 +76,28 @@ public class MainActivity extends AppCompatActivity {
 
             @Override
             public boolean onQueryTextChange(String newText) {
-                ConversasFragment conversasFragment = (ConversasFragment) adapter.getPage(1);
-                if (newText != null & !newText.isEmpty()) {
-                    conversasFragment.pesquisarConversas(newText.toLowerCase());
-                } else {
-                    conversasFragment.recarregaListaDeConversas();
+
+                switch (viewPager.getCurrentItem()){
+                    case 0:
+                        ContatosFragment contatosFragment = (ContatosFragment) adapter.getPage(0);
+                        if (newText != null & !newText.isEmpty()) {
+                            contatosFragment.pesquisarContatos(newText.toLowerCase());
+                        } else {
+                            contatosFragment.recarregaContatos();
+                        }
+                        break;
+                    case 1:
+                        ConversasFragment conversasFragment = (ConversasFragment) adapter.getPage(1);
+                        if (newText != null & !newText.isEmpty()) {
+                            conversasFragment.pesquisarConversas(newText.toLowerCase());
+                        } else {
+                            conversasFragment.recarregaListaDeConversas();
+                        }
+                        break;
                 }
+
+
+
                 return true;
             }
         });

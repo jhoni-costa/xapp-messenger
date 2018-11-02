@@ -62,7 +62,7 @@ public class ConversasFragment extends Fragment {
                 new RecyclerItemClickListener.OnItemClickListener() {
                     @Override
                     public void onItemClick(View view, int position) {
-                        Conversa conversa = list.get(position);
+                        Conversa conversa = adapter.getConversas().get(position);
 
                         if (conversa.getIsGroup().equals("true")) {
                             Intent i = new Intent(getActivity(), ChatActivity.class);
@@ -113,11 +113,20 @@ public class ConversasFragment extends Fragment {
 
         for (Conversa conversa : list) {
 
-            String nome = conversa.getUsuarioExibicao().getNome().toLowerCase();
-            String ultimaMensagem = conversa.getUltimaMensagem().toLowerCase();
-            if (nome.contains(texto) || ultimaMensagem.contains(texto)) {
-                listaBusca.add(conversa);
+            if (conversa.getUsuarioExibicao() != null) {
+                String nome = conversa.getUsuarioExibicao().getNome().toLowerCase();
+                String ultimaMensagem = conversa.getUltimaMensagem().toLowerCase();
+                if (nome.contains(texto) || ultimaMensagem.contains(texto)) {
+                    listaBusca.add(conversa);
+                }
+            } else {
+                String nome = conversa.getGrupo().getNome().toLowerCase();
+                String ultimaMensagem = conversa.getUltimaMensagem().toLowerCase();
+                if (nome.contains(texto) || ultimaMensagem.contains(texto)) {
+                    listaBusca.add(conversa);
+                }
             }
+
         }
         adapter = new ConversasAdapter(listaBusca, getActivity());
         listaConversas.setAdapter(adapter);

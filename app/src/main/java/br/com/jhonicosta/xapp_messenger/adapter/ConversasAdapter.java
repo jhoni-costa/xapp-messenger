@@ -35,6 +35,10 @@ public class ConversasAdapter extends RecyclerView.Adapter<ConversasAdapter.MyVi
         return new MyViewHolder(itemLista);
     }
 
+    public List<Conversa> getConversas() {
+        return conversas;
+    }
+
     @Override
     public void onBindViewHolder(@NonNull MyViewHolder myViewHolder, int i) {
         Conversa conversa = conversas.get(i);

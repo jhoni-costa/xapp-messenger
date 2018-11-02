@@ -23,9 +23,11 @@ import br.com.jhonicosta.xapp_messenger.R;
 import br.com.jhonicosta.xapp_messenger.activities.ChatActivity;
 import br.com.jhonicosta.xapp_messenger.activities.GrupoActivity;
 import br.com.jhonicosta.xapp_messenger.adapter.ContatosAdapter;
+import br.com.jhonicosta.xapp_messenger.adapter.ConversasAdapter;
 import br.com.jhonicosta.xapp_messenger.config.FirebaseConfig;
 import br.com.jhonicosta.xapp_messenger.controller.UsuarioController;
 import br.com.jhonicosta.xapp_messenger.helper.RecyclerItemClickListener;
+import br.com.jhonicosta.xapp_messenger.model.Conversa;
 import br.com.jhonicosta.xapp_messenger.model.Usuario;
 
 public class ContatosFragment extends Fragment {
@@ -64,7 +66,7 @@ public class ContatosFragment extends Fragment {
                         new RecyclerItemClickListener.OnItemClickListener() {
                             @Override
                             public void onItemClick(View view, int position) {
-                                Usuario u = list.get(position);
+                                Usuario u = adapter.getContatos().get(position);
                                 boolean cabecalho = u.getEmail().isEmpty();
                                 if (!cabecalho) {
                                     Intent i = new Intent(getActivity(), ChatActivity.class);
@@ -130,5 +132,27 @@ public class ContatosFragment extends Fragment {
 
             }
         });
+    }
+
+    public void pesquisarContatos(String texto) {
+        List<Usuario> listaBusca = new ArrayList<>();
+
+        for (Usuario usuario : list) {
+
+            String nome = usuario.getNome().toLowerCase();
+            if (nome.contains(texto)) {
+                listaBusca.add(usuario);
+            }
+
+        }
+        adapter = new ContatosAdapter(listaBusca, getActivity());
+        listaContatos.setAdapter(adapter);
+        adapter.notifyDataSetChanged();
+    }
+
+    public void recarregaContatos() {
+        adapter = new ContatosAdapter(list, getActivity());
+        listaContatos.setAdapter(adapter);
+        adapter.notifyDataSetChanged();
     }
 }
