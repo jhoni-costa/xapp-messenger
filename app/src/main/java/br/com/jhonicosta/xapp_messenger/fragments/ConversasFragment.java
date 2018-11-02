@@ -112,6 +112,7 @@ public class ConversasFragment extends Fragment {
         List<Conversa> listaBusca = new ArrayList<>();
 
         for (Conversa conversa : list) {
+
             String nome = conversa.getUsuarioExibicao().getNome().toLowerCase();
             String ultimaMensagem = conversa.getUltimaMensagem().toLowerCase();
             if (nome.contains(texto) || ultimaMensagem.contains(texto)) {

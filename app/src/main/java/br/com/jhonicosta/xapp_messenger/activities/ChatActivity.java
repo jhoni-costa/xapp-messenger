@@ -195,18 +195,19 @@ public class ChatActivity extends AppCompatActivity {
         }
     }
 
-    private void salvarConversa(Mensagem msg) {
-
+    private void salvarConversa(String remetente, String destinatario, Usuario user, Mensagem msg, boolean isGruop) {
         Conversa conversaRemetente = new Conversa();
-        conversaRemetente.setIdRemetente(idRemetente);
-        conversaRemetente.setIdDestinatario(idDestinatario);
+        conversaRemetente.setIdRemetente(remetente);
+        conversaRemetente.setIdDestinatario(destinatario);
         conversaRemetente.setUltimaMensagem(msg.getMensagem());
-        conversaRemetente.setUsuarioExibicao(usuario);
+
+        if (isGruop) {
+            conversaRemetente.setIsGroup("true");
+            conversaRemetente.setGrupo(grupo);
+        } else {
+            conversaRemetente.setUsuarioExibicao(user);
+        }
         conversaRemetente.salvar();
-        Toast.makeText(ChatActivity.this, "Remetente: " + idRemetente +
-                        "Destinatario: " + idDestinatario +
-                        "Usuario: " + usuario.getNome(),
-                Toast.LENGTH_SHORT).show();
     }
 
 
@@ -221,14 +222,33 @@ public class ChatActivity extends AppCompatActivity {
     public void enviarMensagem(View view) {
         String txtMsg = editMensagem.getText().toString();
         if (!txtMsg.isEmpty()) {
-            Mensagem mensagem = new Mensagem();
-            mensagem.setIdUsuario(idRemetente);
-            mensagem.setMensagem(txtMsg);
 
-            controllerMsg.enviarMensagem(idRemetente, Base64Helper.encode64(usuario.getEmail()), mensagem);
-            controllerMsg.enviarMensagem(Base64Helper.encode64(usuario.getEmail()), idRemetente, mensagem);
-            salvarConversa(mensagem);
-            editMensagem.setText("");
+            if (usuario != null) {
+                Mensagem mensagem = new Mensagem();
+                mensagem.setIdUsuario(idRemetente);
+                mensagem.setMensagem(txtMsg);
+
+                controllerMsg.enviarMensagem(idRemetente, Base64Helper.encode64(usuario.getEmail()), mensagem);
+                controllerMsg.enviarMensagem(Base64Helper.encode64(usuario.getEmail()), idRemetente, mensagem);
+                salvarConversa(idRemetente, idDestinatario, usuario, mensagem, false);
+                salvarConversa(idDestinatario, idRemetente, controllerUser.getUsuario(), mensagem, false);
+                editMensagem.setText("");
+            } else {
+                for (Usuario usuario : grupo.getMembros()) {
+                    String id = Base64Helper.encode64(usuario.getEmail());
+                    String idLogado = new UsuarioController(this).getIdUser();
+
+                    Mensagem mensagem = new Mensagem();
+                    mensagem.setIdUsuario(idLogado);
+                    mensagem.setMensagem(txtMsg);
+                    mensagem.setNome(controllerUser.getUsuario().getNome());
+
+                    controllerMsg.enviarMensagem(id, idDestinatario, mensagem);
+                    salvarConversa(id, idDestinatario, this.usuario, mensagem, true);
+                    editMensagem.setText("");
+                }
+            }
+
 
         } else {
             Toast.makeText(ChatActivity.this, "Mensagem vazia", Toast.LENGTH_SHORT).show();
