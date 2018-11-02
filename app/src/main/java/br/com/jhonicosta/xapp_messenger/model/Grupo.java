@@ -6,6 +6,7 @@ import java.io.Serializable;
 import java.util.List;
 
 import br.com.jhonicosta.xapp_messenger.config.FirebaseConfig;
+import br.com.jhonicosta.xapp_messenger.helper.Base64Helper;
 
 public class Grupo implements Serializable {
 
@@ -53,5 +54,22 @@ public class Grupo implements Serializable {
 
     public void setMembros(List<Usuario> membros) {
         this.membros = membros;
+    }
+
+    public void salvar() {
+        DatabaseReference reference = FirebaseConfig.getFirebaseDatabase();
+        reference = reference.child("grupos");
+
+        reference.child(getId()).setValue(this);
+
+        for (Usuario usuario : getMembros()) {
+            Conversa conversa = new Conversa();
+            conversa.setIdRemetente(Base64Helper.encode64(usuario.getEmail()));
+            conversa.setIdDestinatario(getId());
+            conversa.setUltimaMensagem("");
+            conversa.setIsGroup("true");
+            conversa.setGrupo(this);
+            conversa.salvar();
+        }
     }
 }

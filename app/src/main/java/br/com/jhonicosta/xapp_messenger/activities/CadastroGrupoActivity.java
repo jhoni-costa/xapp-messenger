@@ -30,6 +30,7 @@ import java.util.List;
 import br.com.jhonicosta.xapp_messenger.R;
 import br.com.jhonicosta.xapp_messenger.adapter.GrupoSelecionadoAdapter;
 import br.com.jhonicosta.xapp_messenger.config.FirebaseConfig;
+import br.com.jhonicosta.xapp_messenger.controller.UsuarioController;
 import br.com.jhonicosta.xapp_messenger.model.Grupo;
 import br.com.jhonicosta.xapp_messenger.model.Usuario;
 import de.hdodenhof.circleimageview.CircleImageView;
@@ -45,7 +46,7 @@ public class CadastroGrupoActivity extends AppCompatActivity {
     private CircleImageView imagemGrupo;
     private RecyclerView recyclerView;
     private GrupoSelecionadoAdapter grupoSelecionadoAdapter;
-
+    private FloatingActionButton fabSalvarGrupo;
     private Grupo grupo;
 
     private StorageReference storageReference;
@@ -61,14 +62,8 @@ public class CadastroGrupoActivity extends AppCompatActivity {
 
         grupo = new Grupo();
 
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-            }
-        });
+        fabSalvarGrupo = findViewById(R.id.fabSalvarGrupo);
+
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         storageReference = FirebaseConfig.getFirebaseStorage();
         nomeGrupo = findViewById(R.id.txtNomeGrupo);
@@ -102,6 +97,19 @@ public class CadastroGrupoActivity extends AppCompatActivity {
         recyclerView.setLayoutManager(layoutManagerHorizontal);
         recyclerView.setHasFixedSize(true);
         recyclerView.setAdapter(grupoSelecionadoAdapter);
+
+        fabSalvarGrupo.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                String nome = nomeGrupo.getText().toString();
+
+                listaMembrosSelecionados.add(new UsuarioController(getParent()).getUsuario());
+
+                grupo.setMembros(listaMembrosSelecionados);
+                grupo.setNome(nome);
+                grupo.salvar();
+            }
+        });
 
     }
 
